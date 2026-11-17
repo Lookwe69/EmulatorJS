@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import httpServer from "http-server";
 import { chromium } from "playwright";
 
-// Smoke test: the legacy data/loader.js flow must boot end to end in both
+// Smoke test: the data/loader.js flow must boot end to end in both
 // the minified and the debug build — window.EJS_emulator is set, the ready
 // event fires, and no uncaught page errors occur.
 
@@ -21,14 +21,14 @@ function check(name, condition) {
     }
 }
 
-async function checkLegacyBoot(browser, baseUrl, suffix, label) {
+async function checkLoaderBoot(browser, baseUrl, suffix, label) {
     const page = await browser.newPage();
     const pageErrors = [];
     const requests = [];
     page.on("pageerror", (e) => pageErrors.push(String(e)));
     page.on("request", (r) => requests.push(r.url()));
 
-    await page.goto(baseUrl + "/test/legacy.html" + suffix);
+    await page.goto(baseUrl + "/test/loader.html" + suffix);
     await page.waitForFunction(() => window.EJS_emulator && window.__ejsReadyFired, null, { timeout: 30000 });
 
     const state = await page.evaluate(() => ({
@@ -63,11 +63,11 @@ async function main() {
 
     const browser = await chromium.launch();
     try {
-        const minRequests = await checkLegacyBoot(browser, baseUrl, "", "legacy (minified)");
-        check("legacy (minified): emulator bundle requested", minRequests.some((u) => u.includes("/data/emulator.min.js")));
+        const minRequests = await checkLoaderBoot(browser, baseUrl, "", "loader (minified)");
+        check("loader (minified): emulator bundle requested", minRequests.some((u) => u.includes("/data/emulator.min.js")));
 
-        const debugRequests = await checkLegacyBoot(browser, baseUrl, "?debug", "legacy (debug)");
-        check("legacy (debug): unbundled src/emulator.js requested", debugRequests.some((u) => u.includes("/data/src/emulator.js")));
+        const debugRequests = await checkLoaderBoot(browser, baseUrl, "?debug", "loader (debug)");
+        check("loader (debug): unbundled src/emulator.js requested", debugRequests.some((u) => u.includes("/data/src/emulator.js")));
     } finally {
         await browser.close();
         server.close();
