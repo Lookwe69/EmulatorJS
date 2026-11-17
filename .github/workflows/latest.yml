@@ -23,6 +23,8 @@ jobs:
           git reset --hard origin/main
           git pull
       - name: Minify Files
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: |
           cd /mnt/HDD/public/.EmulatorJS/
           rm -f "minify/package-lock.json"

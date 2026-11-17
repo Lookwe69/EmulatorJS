@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>EmulatorJS legacy loader test</title>
+</head>
+<body>
+    <div id="game"></div>
+    <script>
+        window.EJS_player = "#game";
+        window.EJS_core = "nes";
+        window.EJS_gameName = "test-game";
+        window.EJS_gameUrl = "roms/test-game.nes";
+        window.EJS_DEBUG_XX = new URLSearchParams(location.search).has("debug");
+        window.EJS_ready = function() { window.__ejsReadyFired = true; };
+    </script>
+    <script src="../data/loader.js"></script>
+</body>
+</html>
