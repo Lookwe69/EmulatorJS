@@ -33,8 +33,6 @@ jobs:
           7z x -y "$TRIMMED_TAG.7z" "data/cores/*" -o./
           rm "$TRIMMED_TAG.7z"
       - run: npm i
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       - name: Make @emulatorjs/emulatorjs
         run: |
           node build.js --npm=emulatorjs
@@ -42,7 +40,6 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       - name: Get cores list
         run: |
           echo "CORES=$(node build.js --npm=get-cores | jq -r '. | join(" ")')" >> $GITHUB_ENV
@@ -68,4 +65,3 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'

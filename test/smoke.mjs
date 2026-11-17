@@ -2,7 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import httpServer from "http-server";
-import { chromium } from "playwright";
+import { chromium } from "playwright-core";
 
 // Smoke test: the data/loader.js flow must boot end to end in both
 // the minified and the debug build — window.EJS_emulator is set, the ready

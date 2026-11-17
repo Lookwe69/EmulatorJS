@@ -21,11 +21,9 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
     - name: Install Chromium
-      run: npx playwright install --with-deps chromium
+      run: npx playwright-core install --with-deps chromium
 
     - name: Run smoke test
       run: npm test
